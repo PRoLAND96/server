@@ -59,7 +59,7 @@ app.get("/clothes", (req, res) => {
   }
 */
 app.post("/clothes", (req, res) => {
-  const { image, name, price, rating } = req.body;
+  const { image, name, price, rating, gender, category } = req.body;
 
   fs.readFile("db.json", "utf8", (err, data) => {
     if (err) {
@@ -81,6 +81,8 @@ app.post("/clothes", (req, res) => {
       name,
       price,
       rating,
+      gender: req.body.gender || "Men",
+      category: req.body.category || "Shoes",
     };
 
     jsonData.items.push(newItem);
@@ -109,7 +111,7 @@ app.post("/clothes", (req, res) => {
 */
 app.put("/clothes/:id", (req, res) => {
   const id = parseInt(req.params.id);
-  const { image, name, price, rating } = req.body;
+  const { image, name, price, rating, gender, category } = req.body;
 
   fs.readFile("db.json", "utf8", (err, data) => {
     if (err) {
@@ -133,6 +135,8 @@ app.put("/clothes/:id", (req, res) => {
       name,
       price,
       rating,
+      gender: req.body.gender || jsonData.items[index].gender,
+      category: req.body.category || jsonData.items[index].category,
     };
 
     fs.writeFile("db.json", JSON.stringify(jsonData), (err) => {
